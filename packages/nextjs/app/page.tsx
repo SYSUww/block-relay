@@ -2,88 +2,101 @@
 
 import Link from "next/link";
 import type { NextPage } from "next";
+import { hardhat } from "viem/chains";
 import { useAccount } from "wagmi";
 import { BoltIcon, BookOpenIcon, BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Address } from "~~/components/scaffold-eth";
+import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
+  const { targetNetwork } = useTargetNetwork();
+  const isLocalNetwork = targetNetwork.id === hardhat.id;
+  const explorerUrl = isLocalNetwork ? "/blockexplorer" : targetNetwork.blockExplorers?.default.url;
 
   return (
-    <>
-      <div className="flex items-center flex-col flex-grow pt-10">
-        <div className="px-5">
-          <h1 className="text-center">
-            <span className="block text-2xl mb-2">Monad Blitz Shanghai</span>
-            <span className="block text-4xl font-bold">Block Relay</span>
-          </h1>
-          <div className="flex justify-center items-center space-x-2 flex-col sm:flex-row">
-            <p className="my-2 font-medium">Connected Address:</p>
-            <Address address={connectedAddress} />
-          </div>
-          <p className="text-center text-lg">
-            Get started by editing{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/nextjs/app/page.tsx
-            </code>
-          </p>
-          <p className="text-center text-lg">
-            Edit your smart contract{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              YourContract.sol
-            </code>{" "}
-            in{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/hardhat/contracts
-            </code>
-          </p>
-        </div>
+    <div className="flex flex-col flex-grow">
+      <section className="flex flex-col items-center px-5 pb-14 pt-12 text-center sm:pb-20 sm:pt-16">
+        <p className="m-0 text-sm font-semibold uppercase tracking-[0.24em] text-secondary">Monad Blitz Shanghai</p>
+        <h1 className="mt-4 text-5xl font-bold tracking-tight sm:text-6xl">Block Relay</h1>
+        <p className="mt-5 max-w-2xl text-lg leading-8 text-base-content/80 sm:text-xl">
+          A focused starter workspace for building and testing an onchain relay on Monad.
+        </p>
 
-        <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
-          <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
-            <div className="flex flex-col bg-base-200 border-base-100 border-2 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <BoltIcon className="h-8 w-8" />
-              <p>
-                Get testnet funds from the{" "}
-                <Link href="https://testnet.monad.xyz" passHref className="link" target="_blank" rel="noreferrer">
-                  Faucet
-                </Link>{" "}
-              </p>
+        <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row">
+          <span className="badge badge-secondary badge-lg h-auto px-4 py-2 font-medium">{targetNetwork.name}</span>
+          {connectedAddress ? (
+            <div className="flex items-center gap-2 rounded-full border border-base-100/60 px-4 py-2">
+              <span className="text-sm text-base-content/70">Connected</span>
+              <Address address={connectedAddress} size="sm" />
             </div>
-            <div className="flex flex-col bg-base-200 border-base-100 border-2 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <BugAntIcon className="h-8 w-8" />
-              <p>
-                Tinker with your smart contract using the{" "}
-                <Link href="/debug" passHref className="link">
-                  Debug Contracts
-                </Link>{" "}
-                tab.
-              </p>
-            </div>
-            <div className="flex flex-col bg-base-200 border-base-100 border-2 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <MagnifyingGlassIcon className="h-8 w-8" />
-              <p>
-                Explore your local transactions with the{" "}
-                <Link href="https://testnet.monadvision.com" passHref className="link" target="_blank" rel="noreferrer">
-                  Block Explorer
-                </Link>{" "}
-                tab.
-              </p>
-            </div>
-            <div className="flex flex-col bg-base-200 border-base-100 border-2 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <BookOpenIcon className="h-8 w-8" />
-              <p>
-                Learn more about{" "}
-                <Link href="https://docs.monad.xyz" passHref className="link" target="_blank">
-                  Monad
+          ) : (
+            <span className="text-sm text-base-content/70">Connect a wallet to continue</span>
+          )}
+        </div>
+      </section>
+
+      <section className="flex-grow bg-base-300 px-5 py-10 sm:px-8 sm:py-14">
+        <div className="mx-auto grid max-w-6xl gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="flex min-h-52 flex-col items-center justify-center rounded-3xl border-2 border-base-100 bg-base-200 px-7 py-9 text-center">
+            <BoltIcon className="h-8 w-8" />
+            {isLocalNetwork ? (
+              <p className="leading-7">Use the faucet icon in the header to fund your local wallet.</p>
+            ) : (
+              <p className="leading-7">
+                Get MON for testing from the{" "}
+                <Link href="https://testnet.monad.xyz" className="link" target="_blank" rel="noreferrer">
+                  Monad Faucet
                 </Link>
                 .
               </p>
-            </div>
+            )}
+          </div>
+
+          <div className="flex min-h-52 flex-col items-center justify-center rounded-3xl border-2 border-base-100 bg-base-200 px-7 py-9 text-center">
+            <BugAntIcon className="h-8 w-8" />
+            <p className="leading-7">
+              Inspect and interact with deployed contracts in{" "}
+              <Link href="/debug" className="link">
+                Debug Contracts
+              </Link>
+              .
+            </p>
+          </div>
+
+          <div className="flex min-h-52 flex-col items-center justify-center rounded-3xl border-2 border-base-100 bg-base-200 px-7 py-9 text-center">
+            <MagnifyingGlassIcon className="h-8 w-8" />
+            <p className="leading-7">
+              Review activity in the{" "}
+              {explorerUrl ? (
+                <Link
+                  href={explorerUrl}
+                  className="link"
+                  target={isLocalNetwork ? undefined : "_blank"}
+                  rel={isLocalNetwork ? undefined : "noreferrer"}
+                >
+                  {isLocalNetwork ? "local explorer" : "Monad explorer"}
+                </Link>
+              ) : (
+                "network explorer"
+              )}
+              .
+            </p>
+          </div>
+
+          <div className="flex min-h-52 flex-col items-center justify-center rounded-3xl border-2 border-base-100 bg-base-200 px-7 py-9 text-center">
+            <BookOpenIcon className="h-8 w-8" />
+            <p className="leading-7">
+              Read the{" "}
+              <Link href="https://docs.monad.xyz" className="link" target="_blank" rel="noreferrer">
+                Monad developer docs
+              </Link>
+              .
+            </p>
           </div>
         </div>
-      </div>
-    </>
+      </section>
+    </div>
   );
 };
 

@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { useTargetNetwork } from "./useTargetNetwork";
 import { useInterval } from "usehooks-ts";
+import { hardhat } from "viem/chains";
 import scaffoldConfig from "~~/scaffold.config";
 import { useGlobalState } from "~~/services/store/store";
 import { fetchPriceFromUniswap } from "~~/utils/scaffold-eth";
@@ -16,6 +17,12 @@ export const useInitializeNativeCurrencyPrice = () => {
   const { targetNetwork } = useTargetNetwork();
 
   const fetchPrice = useCallback(async () => {
+    if (targetNetwork.id === hardhat.id) {
+      setNativeCurrencyPrice(0);
+      setIsNativeCurrencyFetching(false);
+      return;
+    }
+
     setIsNativeCurrencyFetching(true);
     const price = await fetchPriceFromUniswap(targetNetwork);
     setNativeCurrencyPrice(price);
