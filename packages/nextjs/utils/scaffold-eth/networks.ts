@@ -33,6 +33,13 @@ export const NETWORKS_EXTRA_DATA: Record<string, ChainAttributes> = {
  * Gives the block explorer transaction URL, returns empty string if the network is a local chain
  */
 export function getBlockExplorerTxLink(chainId: number, txnHash: string) {
+  const configuredNetwork = scaffoldConfig.targetNetworks.find(network => network.id === chainId);
+  const configuredExplorerUrl = configuredNetwork?.blockExplorers?.default?.url;
+
+  if (configuredExplorerUrl) {
+    return `${configuredExplorerUrl}/tx/${txnHash}`;
+  }
+
   const chainNames = Object.keys(chains);
 
   const targetChainArr = chainNames.filter(chainName => {

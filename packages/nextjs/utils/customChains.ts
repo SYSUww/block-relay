@@ -1,21 +1,21 @@
 import { defineChain } from "viem";
 
-// TODO: Add Chain details here.
+const monadTestnetRpcUrl = process.env.NEXT_PUBLIC_MONAD_RPC_URL || "https://testnet-rpc.monad.xyz";
+
 export const monadTestnet = defineChain({
   id: 10143,
   name: "Monad Testnet",
   nativeCurrency: { name: "Monad", symbol: "MON", decimals: 18 },
   rpcUrls: {
     default: {
-      // TODO: Add Monad RPC URL
-      http: ["<MONAD_RPC_URL>"],
+      http: [monadTestnetRpcUrl],
     },
   },
   blockExplorers: {
     default: {
-      name: "Monad Testnet Blockscout",
-      // TODO: Add Explorer URL
-      url: "https://testnet.monadexplorer.com",
+      name: "MonadVision",
+      url: "https://testnet.monadvision.com",
     },
   },
+  testnet: true,
 });

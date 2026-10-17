@@ -10,7 +10,7 @@ This project starts from the official [Scaffold-ETH-Monad](https://github.com/mo
 
 <h4 align="center">
   <a href="https://docs.monad.xyz">Documentation</a>
-  | <a href="https://github.com/monad-developers/scaffold-eth-monad/issues">Report Issue</a>
+  | <a href="https://github.com/SYSUww/block-relay/issues">Report Issue</a>
 
 </h4>
 
@@ -29,7 +29,7 @@ This project starts from the official [Scaffold-ETH-Monad](https://github.com/mo
 Before you begin, you need to install the following tools:
 
 -   [Node (>= v18.18)](https://nodejs.org/en/download/)
--   Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
+-   [Corepack](https://nodejs.org/api/corepack.html) for the repository-pinned Yarn 3.2.3
 -   [Git](https://git-scm.com/downloads)
 
 ## Quickstart
@@ -39,51 +39,50 @@ To get started, follow the steps below:
 1. Clone this repo & install dependencies
 
 ```sh
-git clone https://github.com/monad-developers/scaffold-eth-monad.git
+git clone https://github.com/SYSUww/block-relay.git
 ```
 
 2. Open the project directory and install dependencies
 
 ```sh
-cd scaffold-eth-monad && yarn install
+cd block-relay && corepack yarn install
 ```
 
-2. Setup `.env` file for Hardhat:
+3. Start the local chain, deploy the template contract, and start the app in three terminals:
+
+```sh
+corepack yarn chain
+corepack yarn deploy
+corepack yarn start
+```
+
+Visit `http://localhost:3000` and use the Debug Contracts page to interact with the local deployment.
+
+## Monad Testnet
+
+Create `packages/hardhat/.env` from the example before deploying to Monad Testnet:
 
 Make a copy of `.env.example` in `packages/hardhat` folder, name it `.env` and enter the respective values
 
 ```
 DEPLOYER_PRIVATE_KEY=
-MONAD_RPC_URL=
-MONAD_CHAIN_ID=
-MONAD_EXPLORER_URL=
+MONAD_RPC_URL=https://testnet-rpc.monad.xyz
+MONAD_CHAIN_ID=10143
 ```
 
-3. Deploying smart contracts on Monad:
-
-Once the `.env` file is setup, you can now run the below command in your terminal.
+Use a dedicated Testnet account. Never commit its private key. Deploy explicitly with:
 
 ```sh
-yarn deploy
+corepack yarn deploy:testnet
 ```
 
-This command deploys a test smart contract to the Monad testnet network. The contract is located in `packages/hardhat/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/hardhat/deploy` to deploy the contract to the network. You can also customize the deploy script.
-
-4. Setup `.env` file for Next.js app (optional):
-
-Make a copy of `.env.example` in `packages/nextjs` folder, name it `.env` and enter the respective values
+For the frontend, copy `packages/nextjs/.env.example` to `packages/nextjs/.env.local`. This switches the frontend from the default local Hardhat network to Monad Testnet:
 
 ```
+NEXT_PUBLIC_TARGET_NETWORK=monad-testnet
+NEXT_PUBLIC_MONAD_RPC_URL=https://testnet-rpc.monad.xyz
 NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=
 ```
-
-5. On a second terminal, start your NextJS app:
-
-```
-yarn start
-```
-
-Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
 
 **What's next**:
 

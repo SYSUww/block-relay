@@ -14,8 +14,8 @@ const Home: NextPage = () => {
       <div className="flex items-center flex-col flex-grow pt-10">
         <div className="px-5">
           <h1 className="text-center">
-            <span className="block text-2xl mb-2">Welcome to</span>
-            <span className="block text-4xl font-bold">Scaffold-ETH-Monad</span>
+            <span className="block text-2xl mb-2">Monad Blitz Shanghai</span>
+            <span className="block text-4xl font-bold">Block Relay</span>
           </h1>
           <div className="flex justify-center items-center space-x-2 flex-col sm:flex-row">
             <p className="my-2 font-medium">Connected Address:</p>
@@ -45,8 +45,8 @@ const Home: NextPage = () => {
               <BoltIcon className="h-8 w-8" />
               <p>
                 Get testnet funds from the{" "}
-                <Link href="#" passHref className="link">
-                  {/* TODO: Add Faucet link here */}Faucet
+                <Link href="https://testnet.monad.xyz" passHref className="link" target="_blank" rel="noreferrer">
+                  Faucet
                 </Link>{" "}
               </p>
             </div>
@@ -64,8 +64,8 @@ const Home: NextPage = () => {
               <MagnifyingGlassIcon className="h-8 w-8" />
               <p>
                 Explore your local transactions with the{" "}
-                <Link href="" passHref className="link">
-                  {/* TODO: Add Explorer link here */}Block Explorer
+                <Link href="https://testnet.monadvision.com" passHref className="link" target="_blank" rel="noreferrer">
+                  Block Explorer
                 </Link>{" "}
                 tab.
               </p>

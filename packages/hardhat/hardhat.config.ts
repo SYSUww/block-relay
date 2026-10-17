@@ -10,9 +10,9 @@ import "@nomicfoundation/hardhat-verify";
 import "hardhat-deploy";
 import "hardhat-deploy-ethers";
 
-// If not set, it uses the hardhat account 0 private key.
-const deployerPrivateKey =
-  process.env.DEPLOYER_PRIVATE_KEY ?? "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
+const deployerPrivateKey = process.env.DEPLOYER_PRIVATE_KEY;
+const monadRpcUrl = process.env.MONAD_RPC_URL || "https://testnet-rpc.monad.xyz";
+const monadChainId = Number(process.env.MONAD_CHAIN_ID || "10143");
 
 // If not set, it uses ours Etherscan default API key.
 // const etherscanApiKey = process.env.ETHERSCAN_API_KEY || "DNXJA8RX2Q3VZ4URQIWP7Z68CJXQZSC6AW";
@@ -52,9 +52,9 @@ const config: HardhatUserConfig = {
       },
     },
     monadTestnet: {
-      url: "https://testnet-rpc.monad.xyz",
-      accounts: [deployerPrivateKey],
-      chainId: 10143,
+      url: monadRpcUrl,
+      accounts: deployerPrivateKey ? [deployerPrivateKey] : [],
+      chainId: monadChainId,
     },
   },
   // configuration for harhdat-verify plugin
@@ -64,7 +64,7 @@ const config: HardhatUserConfig = {
   sourcify: {
     enabled: true,
     apiUrl: "https://sourcify-api-monad.blockvision.org",
-    browserUrl: "https://testnet.monadexplorer.com",
+    browserUrl: "https://testnet.monadvision.com",
   },
 };
 

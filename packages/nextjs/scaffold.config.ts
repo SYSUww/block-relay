@@ -11,11 +11,11 @@ export type ScaffoldConfig = {
 
 const scaffoldConfig = {
   // The networks on which your DApp is live
-  targetNetworks: [monadTestnet],
+  targetNetworks: [process.env.NEXT_PUBLIC_TARGET_NETWORK === "monad-testnet" ? monadTestnet : chains.hardhat],
 
   // The interval at which your front-end polls the RPC servers for new data
   // it has no effect if you only target the local network (default is 4000)
-  pollingInterval: 30000,
+  pollingInterval: 3000,
 
   // You can get your Alchemy's default API key at https://dashboard.alchemyapi.io
   // It's recommended to store it in an env variable:
